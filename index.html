@@ -16,12 +16,37 @@
     background: #fff;
     overflow: hidden;
   }
+  .btn{
+    position: absolute;
+    right:15px;
+    top:15px;
+    cursor: pointer;
+    width:140px;
+    height:30px;
+    line-height: 30px;
+    color:#333;
+    border:1px solid #ddd;
+    border-radius: 15px;
+    text-align: center;
+    text-decoration: none;
+  }
 </style>
 <body>
+<a href="javascript:;" class="btn">toggle animate</a>
 <script src="./dist/wave.js"></script>
 <script>
   var wave = new Wave('body')
   wave.animate()
+
+
+  const btn = document.querySelector('.btn')
+  btn.addEventListener('click',function () {
+    if(wave.status === 'animating'){
+      wave.pause()
+    }else{
+      wave.animate()
+    }
+  })
 </script>
 </body>
 </html>

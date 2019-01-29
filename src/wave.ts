@@ -9,6 +9,7 @@ class Wave implements Core {
   lines: Array<string>
   step: number
   frame: number | null
+  status:'animating'|'pause'
 
   constructor(container: string, options?: Options) {
     const originOption = {
@@ -26,6 +27,8 @@ class Wave implements Core {
     this.lines = []
     this.frame = null
     this.step = 0
+    this.status = 'pause'
+
     this.init()
   }
 
@@ -44,6 +47,7 @@ class Wave implements Core {
   }
 
   animate() {
+    this.status = 'animating'
     const canvas = this.canvas
     const ctx = this.ctx
 
@@ -82,6 +86,7 @@ class Wave implements Core {
   pause() {
     cancelAnimationFrame(this.frame)
     this.frame = null
+    this.status = 'pause'
   }
 
   setOptions() {
