@@ -18,6 +18,7 @@ gulp.task("build", function () {
   })
     .plugin(tsify)
     .bundle()
+    .on('error', (error)=>console.log(error))
     .pipe(source('wave.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))

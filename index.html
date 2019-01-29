@@ -4,8 +4,24 @@
   <meta charset="UTF-8" />
   <title>Hello World!</title>
 </head>
+<style>
+  *{
+    margin:0;
+    padding:0;
+  }
+  html,body{
+    height:100%;
+  }
+  body{
+    background: #fff;
+    overflow: hidden;
+  }
+</style>
 <body>
-<p id="greeting">Loading ...</p>
 <script src="./dist/wave.js"></script>
+<script>
+  var wave = new Wave('body')
+  wave.animate()
+</script>
 </body>
 </html>
