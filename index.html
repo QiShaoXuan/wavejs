@@ -32,14 +32,21 @@
     text-align: center;
     text-decoration: none;
   }
+  .link{
+    position: absolute;
+    right:15px;
+    bottom:15px;
+    color:#333;
+
+  }
 </style>
 <body>
 <a href="javascript:;" class="btn">toggle animate</a>
+<a href="https://qishaoxuan.github.io/wavejs/" class="link">GITHUB ==></a>
 <script src="./dist/wave.js"></script>
 <script>
   var wave = new Wave('body')
   wave.animate()
-
 
   const btn = document.querySelector('.btn')
   btn.addEventListener('click',function () {
