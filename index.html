@@ -45,7 +45,12 @@
 <a href="https://qishaoxuan.github.io/wavejs/" class="link">GITHUB ==></a>
 <script src="./dist/wave.js"></script>
 <script>
-  var wave = new Wave('body')
+  var wave = new Wave('body',{
+    border:{
+      show:true,
+      width:2,
+    }
+  })
   wave.animate()
 
   const btn = document.querySelector('.btn')

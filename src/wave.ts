@@ -6,18 +6,23 @@ class Wave implements Core {
   canvas: HTMLCanvasElement
   ctx: CanvasRenderingContext2D
   options: Options
-  lines: Array<string>
+  lines: Array<{ hex: string, rgba: string }>
   step: number
   frame: number | null
-  status:'animating'|'pause'
+  status: 'animating' | 'pause'
 
   constructor(container: string, options?: Options) {
     const originOption = {
       number: 3,
-      smooth: 70,
+      smooth: 50,
       velocity: 1,
       height: .5,
-      colors:['#ff7657'],
+      colors: ['#ff7657'],
+      border: {
+        show: false,
+        width: 2,
+        color: ''
+      },
       opacity: .5,
       position: 'bottom',
     }
@@ -54,14 +59,20 @@ class Wave implements Core {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     this.step += this.options.velocity
 
-    this.lines.forEach((color, index) => {
+    this.lines.forEach((line, index) => {
       const angle = (this.step + index * 180 / this.lines.length) * Math.PI / 180
       const leftHeight = Math.sin(angle) * this.options.smooth
       const rightHeight = Math.cos(angle) * this.options.smooth
 
-      ctx.fillStyle = color
+      ctx.fillStyle = line.rgba
       ctx.beginPath()
       ctx.moveTo(0, canvas.height * this.options.height + leftHeight)
+
+      if (this.options.border.show) {
+        ctx.lineWidth = this.options.border.width
+        ctx.strokeStyle = this.options.border.color ? this.options.border.color : line.hex
+      }
+
       ctx.bezierCurveTo(canvas.width / 2,
         canvas.height * this.options.height + leftHeight - this.options.smooth,
         canvas.width / 2,
@@ -69,6 +80,9 @@ class Wave implements Core {
         canvas.width,
         canvas.height * this.options.height + rightHeight)
 
+      if (this.options.border.show) {
+        ctx.stroke()
+      }
       ctx.lineTo(canvas.width, canvas.height)
       ctx.lineTo(0, canvas.height)
       ctx.lineTo(0, canvas.height * this.options.height + leftHeight)
@@ -96,8 +110,12 @@ class Wave implements Core {
 
   setLines() {
     for (let i = 0; i < this.options.number; i++) {
-      const color = colorRgb(colorHex(this.options.colors[i % this.options.colors.length]), this.options.opacity)
-      this.lines.push(color)
+      const color = this.options.colors[i % this.options.colors.length]
+      const line = {
+        hex: colorHex((<any>color)),
+        rgba: colorRgb((<any>color), this.options.opacity)
+      }
+      this.lines.push(line)
     }
   }
 }

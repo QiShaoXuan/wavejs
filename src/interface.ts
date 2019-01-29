@@ -3,7 +3,7 @@ export interface Core {
   canvas:HTMLElement
   ctx:CanvasRenderingContext2D
   step: number
-  lines:Array<string>
+  lines: Array<{hex:string,rgba:string}>
   frame: number | null
 
   init: () => void
@@ -17,7 +17,12 @@ export interface Options {
   smooth: number
   velocity: number
   height: number
-  colors: Array<string>
+  colors: Array<{hex:string,rgba:string}>
   opacity:number
+  border:{
+    show:boolean,
+    width:number,
+    color:string
+  }
   position: 'top' | 'bottom'
 }
