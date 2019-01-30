@@ -16,7 +16,7 @@ class Wave implements Core {
       number: 3,
       smooth: 50,
       velocity: 1,
-      height: .5,
+      height: .3,
       colors: ['#ff7657'],
       border: {
         show: false,
@@ -35,6 +35,7 @@ class Wave implements Core {
     this.status = 'pause'
 
     this.init()
+    this.draw()
   }
 
   init() {
@@ -53,8 +54,13 @@ class Wave implements Core {
 
   animate() {
     this.status = 'animating'
+    this.draw()
+  }
+
+  draw() {
     const canvas = this.canvas
     const ctx = this.ctx
+    const height = this.getWaveHeight()
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     this.step += this.options.velocity
@@ -64,37 +70,51 @@ class Wave implements Core {
       const leftHeight = Math.sin(angle) * this.options.smooth
       const rightHeight = Math.cos(angle) * this.options.smooth
 
+      const vertexs = this.getVertexs(leftHeight, rightHeight)
+
       ctx.fillStyle = line.rgba
       ctx.beginPath()
-      ctx.moveTo(0, canvas.height * this.options.height + leftHeight)
+
+      ctx.moveTo(vertexs[0][0], vertexs[0][1])
 
       if (this.options.border.show) {
         ctx.lineWidth = this.options.border.width
         ctx.strokeStyle = this.options.border.color ? this.options.border.color : line.hex
       }
 
-      ctx.bezierCurveTo(canvas.width / 2,
-        canvas.height * this.options.height + leftHeight - this.options.smooth,
-        canvas.width / 2,
-        canvas.height * this.options.height + rightHeight - this.options.smooth,
-        canvas.width,
-        canvas.height * this.options.height + rightHeight)
+      if (this.options.position === 'left' || this.options.position === 'right') {
+        ctx.bezierCurveTo(
+          height + leftHeight - this.options.smooth,
+          canvas.height / 2,
+          height + rightHeight - this.options.smooth,
+          canvas.width / 2,
+          vertexs[1][0],
+          vertexs[1][1])
+      } else {
+        ctx.bezierCurveTo(canvas.width / 2,
+          height + leftHeight - this.options.smooth,
+          canvas.width / 2,
+          height + rightHeight - this.options.smooth,
+          vertexs[1][0],
+          vertexs[1][1])
+      }
 
       if (this.options.border.show) {
         ctx.stroke()
       }
-      ctx.lineTo(canvas.width, canvas.height)
-      ctx.lineTo(0, canvas.height)
-      ctx.lineTo(0, canvas.height * this.options.height + leftHeight)
+      ctx.lineTo(vertexs[2][0], vertexs[2][1])
+      ctx.lineTo(vertexs[3][0], vertexs[3][1])
+      ctx.lineTo(vertexs[0][0], vertexs[0][1])
       ctx.closePath()
       ctx.fill()
     })
 
     var that = this;
-    this.frame = requestAnimationFrame(function () {
-      that.animate()
-    })
-
+    if (this.status === 'animating') {
+      this.frame = requestAnimationFrame(function () {
+        that.draw()
+      })
+    }
   }
 
   pause() {
@@ -103,12 +123,16 @@ class Wave implements Core {
     this.status = 'pause'
   }
 
-  setOptions() {
-
+  setOptions(options: Object) {
+    this.options = Object.assign(this.options, options)
     this.setLines()
+    if (this.status === 'pause') {
+      this.draw()
+    }
   }
 
   setLines() {
+    this.lines = []
     for (let i = 0; i < this.options.number; i++) {
       const color = this.options.colors[i % this.options.colors.length]
       const line = {
@@ -118,6 +142,62 @@ class Wave implements Core {
       this.lines.push(line)
     }
   }
+
+  getVertexs(leftHeight: number, rightHeight: number): number[][] {
+    const canvasHeight = this.canvas.height
+    const canvasWidth = this.canvas.width
+
+    let waveHeight = this.getWaveHeight()
+
+    switch (this.options.position) {
+      case 'bottom':
+        return [
+          [0, waveHeight + leftHeight],
+          [canvasWidth, waveHeight + rightHeight],
+          [canvasWidth, canvasHeight],
+          [0, canvasHeight]
+        ]
+      case 'top':
+        return [
+          [0, waveHeight + leftHeight],
+          [canvasWidth, waveHeight + rightHeight],
+          [canvasWidth, 0],
+          [0, 0],
+        ]
+      case 'left':
+        return [
+          [waveHeight + leftHeight, 0],
+          [waveHeight + rightHeight, canvasHeight],
+          [0, canvasHeight],
+          [0, 0],
+        ]
+      case 'right':
+        return [
+          [waveHeight + leftHeight, 0],
+          [waveHeight + rightHeight, canvasHeight],
+          [canvasWidth, canvasHeight],
+          [canvasWidth, 0],
+        ]
+    }
+  }
+
+  getWaveHeight(): number {
+    if (this.options.height > 1) {
+      switch (this.options.position) {
+        case 'bottom':
+          return this.canvas.height - this.options.height
+        case 'top':
+          return this.options.height
+        case 'left':
+          return this.options.height
+        case 'right':
+          return this.canvas.width - this.options.height
+      }
+    } else {
+      return (this.options.position === 'left' || this.options.position === 'right' ? this.canvas.width : this.canvas.height) * (this.options.position === 'right' || this.options.position === 'bottom' ? 1 - this.options.height : this.options.height)
+    }
+  }
+
 }
 
 (<any>window).Wave = Wave

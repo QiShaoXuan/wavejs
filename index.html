@@ -1,54 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <link rel="icon" href="https://qishaoxuan.github.io/animate_resume_ts/images/favicon.png">
+  <meta charset="UTF-8"/>
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="icon"
+    href="https://qishaoxuan.github.io/animate_resume_ts/images/favicon.png">
   <title>Wave</title>
 </head>
-<style>
-  *{
-    margin:0;
-    padding:0;
-  }
-  html,body{
-    height:100%;
-  }
-  body{
-    background: #fff;
-    overflow: hidden;
-  }
-  .btn{
-    position: absolute;
-    right:15px;
-    top:15px;
-    cursor: pointer;
-    width:140px;
-    height:30px;
-    line-height: 30px;
-    color:#333;
-    border:1px solid #ddd;
-    border-radius: 15px;
-    text-align: center;
-    text-decoration: none;
-  }
-  .link{
-    position: absolute;
-    right:15px;
-    bottom:15px;
-    color:#333;
-
-  }
-</style>
+<link rel="stylesheet" href="./index.css">
 <body>
-<a href="javascript:;" class="btn">toggle animate</a>
-<a href="https://qishaoxuan.github.io/wavejs/" class="link">GITHUB ==></a>
+<ul class="control">
+  <li>
+    <label>number:  <span class="value-span number">3</span></label>
+    <input id="number" name="number" type="range" value="3" min="1"
+      max="10" step="1">
+  </li>
+  <li>
+    <label>smooth:  <span class="value-span smooth">50</span></label>
+    <input id="smooth" name="smooth" type="range" value="50" min="1"
+      max="100" step="1">
+  </li>
+  <li>
+    <label>velocity:  <span class="value-span velocity">1</span></label>
+    <input id="velocity" name="velocity" type="range" value="1" min="1"
+      max="10" step="1">
+  </li>
+  <li>
+    <label>height:  <span class="value-span height">0.5</span></label>
+    <input id="height" name="height" type="range" value=".5" min="0"
+      max="1" step=".1">
+  </li>
+  <li>
+    <label>border.show:  <span class="value-span show">true</span></label>
+    <label class="radio-label" for="border-show">true <input id="border-show" name="border-show" type="radio" value="true" checked></label>
+    <label class="radio-label" for="border-hide">false <input id="border-hide" name="border-show" type="radio" value="false"></label>
+  </li>
+  <li>
+    <label>border.width:   <span class="value-span width">2</span><span class="border-width"></span></label>
+    <input id="border-width" name="border-width" type="range" value="2" min="1"
+      max="6"
+      step="1">
+  </li>
+  <li>
+    <label>opacity:  <span class="value-span opacity">0.5</span></label>
+    <input id="opacity" type="range" name="opacity" value=".5" min=".1"
+      max="1"
+      step=".1">
+  </li>
+  <li>
+    <label>position: <span class="value-span position">bottom</span></label>
+    <label class="radio-label" for="position-bottom">bottom <input id="position-bottom" name="position" type="radio" value="bottom" checked> </label>
+    <label class="radio-label" for="position-top">top <input id="position-top" name="position" type="radio" value="top"></label>
+    <label class="radio-label" for="position-left">left <input id="position-left" name="position" type="radio" value="left"></label>
+    <label class="radio-label" for="position-right">right <input id="position-right" name="position" type="radio" value="right"></label>
+  </li>
+  <li>
+    <a href="javascript:;" class="btn">toggle animate</a>
+  </li>
+</ul>
+
+<a href="https://qishaoxuan.github.io/wavejs/"
+  class="link">GITHUB ==></a>
 <script src="./dist/wave.js"></script>
 <script>
-  var wave = new Wave('body',{
-    border:{
-      show:true,
-      width:2,
+  var wave = new Wave('body', {
+    border: {
+      show: true,
+      width: 2,
     }
   })
   wave.animate()
@@ -61,6 +80,35 @@
       wave.animate()
     }
   })
+
+  const inputs = document.querySelectorAll('input')
+  inputs.forEach((input) => {
+    input.addEventListener('change',function () {
+      wave.setOptions(getFrom(inputs))
+    })
+  })
+
+  function getFrom(inputs) {
+    let config = {}
+    inputs.forEach((input) => {
+      if( input.type === 'radio' && !input.checked) return
+
+      const name = input.name.split('-')
+      const value = Number(input.value)?Number(input.value): /false/.test(input.value)?false:/true/.test(input.value)?true:input.value
+      if(name.length === 2){
+        if(!config[name[0]]){
+          config[name[0]] = {}
+        }
+        config[name[0]][name[1]] = value
+        document.querySelector(`.${name[1]}`).innerText = value
+      }else{
+        config[name[0]] = value
+        document.querySelector(`.${name[0]}`).innerText = value
+
+      }
+    })
+    return config
+  }
 </script>
 </body>
 </html>
