@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  box-sizing: border-box;
 }
 
 html, body {
@@ -103,4 +104,18 @@ input[type="range"]::-webkit-slider-thumb {
   text-decoration: none;
   background: #fff;
   margin:30px auto 0;
+}
+
+@media screen and (max-width:959px){
+  .control{
+    width:100%;
+    position: absolute;
+    left:0;bottom:0;
+    top: inherit;
+    right: inherit;
+    padding:15px;
+  }
+  .control li{
+    flex-wrap: wrap;
+  }
 }

@@ -38,26 +38,47 @@ class Wave implements Core {
     this.draw()
   }
 
-  init() {
+  private init() {
     if (this.container.querySelector('canvas') === null) {
       const canvas = document.createElement('canvas')
-      canvas.width = this.container.offsetWidth
-      canvas.height = this.container.offsetHeight
       this.container.appendChild(canvas)
     }
 
     this.canvas = this.container.querySelector('canvas')
+
+    this.canvas.width = this.container.offsetWidth
+    this.canvas.height = this.container.offsetHeight
+
     this.ctx = this.canvas.getContext('2d')
 
     this.setLines()
   }
 
-  animate() {
+  public animate() {
     this.status = 'animating'
     this.draw()
   }
 
-  draw() {
+  public pause() {
+    cancelAnimationFrame(this.frame)
+    this.frame = null
+    this.status = 'pause'
+  }
+
+  public setOptions(options: Object) {
+    this.options = Object.assign(this.options, options)
+    this.setLines()
+    if (this.status === 'pause') {
+      this.draw()
+    }
+  }
+
+  public reset(){
+    this.init()
+    this.reset()
+  }
+
+  private draw() {
     const canvas = this.canvas
     const ctx = this.ctx
     const height = this.getWaveHeight()
@@ -117,21 +138,7 @@ class Wave implements Core {
     }
   }
 
-  pause() {
-    cancelAnimationFrame(this.frame)
-    this.frame = null
-    this.status = 'pause'
-  }
-
-  setOptions(options: Object) {
-    this.options = Object.assign(this.options, options)
-    this.setLines()
-    if (this.status === 'pause') {
-      this.draw()
-    }
-  }
-
-  setLines() {
+  private setLines() {
     this.lines = []
     for (let i = 0; i < this.options.number; i++) {
       const color = this.options.colors[i % this.options.colors.length]
@@ -143,7 +150,7 @@ class Wave implements Core {
     }
   }
 
-  getVertexs(leftHeight: number, rightHeight: number): number[][] {
+  private getVertexs(leftHeight: number, rightHeight: number): number[][] {
     const canvasHeight = this.canvas.height
     const canvasWidth = this.canvas.width
 
@@ -181,7 +188,7 @@ class Wave implements Core {
     }
   }
 
-  getWaveHeight(): number {
+  private getWaveHeight(): number {
     if (this.options.height > 1) {
       switch (this.options.position) {
         case 'bottom':
@@ -194,10 +201,18 @@ class Wave implements Core {
           return this.canvas.width - this.options.height
       }
     } else {
-      return (this.options.position === 'left' || this.options.position === 'right' ? this.canvas.width : this.canvas.height) * (this.options.position === 'right' || this.options.position === 'bottom' ? 1 - this.options.height : this.options.height)
+      switch (this.options.position) {
+        case 'bottom':
+          return this.canvas.height * (1 - this.options.height)
+        case 'top':
+          return this.canvas.height * this.options.height
+        case 'left':
+          return this.canvas.width * this.options.height
+        case 'right':
+          return this.canvas.width * (1 - this.options.height)
+      }
     }
   }
-
 }
 
 (<any>window).Wave = Wave

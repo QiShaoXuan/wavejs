@@ -6,10 +6,10 @@ export interface Core {
   lines: Array<{ hex: string, rgba: string }>
   frame: number | null
 
-  init: () => void
   animate: () => void
   pause: () => void
   setOptions: (options: Object) => void
+  reset: () => void
 }
 
 export interface Options {
