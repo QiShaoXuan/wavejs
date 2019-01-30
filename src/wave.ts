@@ -1,7 +1,7 @@
 import {Core, Options} from "./interface";
 import {getColor, colorHex, colorRgb} from "./untils"
 
-class Wave implements Core {
+export default class Wave implements Core {
   container: HTMLElement
   canvas: HTMLCanvasElement
   ctx: CanvasRenderingContext2D
@@ -214,7 +214,3 @@ class Wave implements Core {
     }
   }
 }
-
-(<any>window).Wave = Wave
-
-export default Wave

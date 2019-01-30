@@ -1,2 +1,237 @@
-!function n(r,h,a){function c(i,t){if(!h[i]){if(!r[i]){var e="function"==typeof require&&require;if(!t&&e)return e(i,!0);if(p)return p(i,!0);var o=new Error("Cannot find module '"+i+"'");throw o.code="MODULE_NOT_FOUND",o}var s=h[i]={exports:{}};r[i][0].call(s.exports,function(t){return c(r[i][1][t]||t)},s,s.exports,n,r,h,a)}return h[i].exports}for(var p="function"==typeof require&&require,t=0;t<a.length;t++)c(a[t]);return c}({1:[function(t,i,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.getColor=function(){return["rgba(162,237,246,.2)","rgba(31,166,196,.2)","rgba(13,71,130,.2)"]},e.colorHex=function(t){var i=t;if(/^(rgb|RGB)/.test(i)){for(var e=i.replace(/(?:\(|\)|rgb|RGB)*/g,"").split(","),o="#",s=0;s<e.length;s++){var n=Number(e[s]).toString(16);n.length<2&&(n="0"+n),o+=n}return 7!==o.length&&(o=i),o}if(/^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/.test(i)){var r=i.replace(/#/,"").split("");if(6===r.length)return i;if(3===r.length){var h="#";for(s=0;s<r.length;s+=1)h+=r[s]+r[s];return h}}return i},e.colorRgb=function(t,i){var e=t.toLowerCase();if(e&&/^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/.test(e)){if(4===e.length){for(var o="#",s=1;s<4;s+=1)o+=e.slice(s,s+1).concat(e.slice(s,s+1));e=o}var n=[];for(s=1;s<7;s+=2)n.push(parseInt("0x"+e.slice(s,s+2)));return"rgba("+n.join(",")+","+i+")"}return e}},{}],2:[function(t,i,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var o=t("./untils"),s=function(){function t(t,i){this.container=document.querySelector(t),this.options=Object.assign({number:3,smooth:50,velocity:1,height:.3,colors:["#ff7657"],border:{show:!1,width:2,color:""},opacity:.5,position:"bottom"},i),this.lines=[],this.frame=null,this.step=0,this.status="pause",this.init(),this.draw()}return t.prototype.init=function(){if(null===this.container.querySelector("canvas")){var t=document.createElement("canvas");this.container.appendChild(t)}this.canvas=this.container.querySelector("canvas"),this.canvas.width=this.container.offsetWidth,this.canvas.height=this.container.offsetHeight,this.ctx=this.canvas.getContext("2d"),this.setLines()},t.prototype.animate=function(){this.status="animating",this.draw()},t.prototype.pause=function(){cancelAnimationFrame(this.frame),this.frame=null,this.status="pause"},t.prototype.setOptions=function(t){this.options=Object.assign(this.options,t),this.setLines(),"pause"===this.status&&this.draw()},t.prototype.reset=function(){this.init(),this.reset()},t.prototype.draw=function(){var r=this,h=this.canvas,a=this.ctx,c=this.getWaveHeight();a.clearRect(0,0,h.width,h.height),this.step+=this.options.velocity,this.lines.forEach(function(t,i){var e=(r.step+180*i/r.lines.length)*Math.PI/180,o=Math.sin(e)*r.options.smooth,s=Math.cos(e)*r.options.smooth,n=r.getVertexs(o,s);a.fillStyle=t.rgba,a.beginPath(),a.moveTo(n[0][0],n[0][1]),r.options.border.show&&(a.lineWidth=r.options.border.width,a.strokeStyle=r.options.border.color?r.options.border.color:t.hex),"left"===r.options.position||"right"===r.options.position?a.bezierCurveTo(c+o-r.options.smooth,h.height/2,c+s-r.options.smooth,h.width/2,n[1][0],n[1][1]):a.bezierCurveTo(h.width/2,c+o-r.options.smooth,h.width/2,c+s-r.options.smooth,n[1][0],n[1][1]),r.options.border.show&&a.stroke(),a.lineTo(n[2][0],n[2][1]),a.lineTo(n[3][0],n[3][1]),a.lineTo(n[0][0],n[0][1]),a.closePath(),a.fill()});var t=this;"animating"===this.status&&(this.frame=requestAnimationFrame(function(){t.draw()}))},t.prototype.setLines=function(){this.lines=[];for(var t=0;t<this.options.number;t++){var i=this.options.colors[t%this.options.colors.length],e={hex:o.colorHex(i),rgba:o.colorRgb(i,this.options.opacity)};this.lines.push(e)}},t.prototype.getVertexs=function(t,i){var e=this.canvas.height,o=this.canvas.width,s=this.getWaveHeight();switch(this.options.position){case"bottom":return[[0,s+t],[o,s+i],[o,e],[0,e]];case"top":return[[0,s+t],[o,s+i],[o,0],[0,0]];case"left":return[[s+t,0],[s+i,e],[0,e],[0,0]];case"right":return[[s+t,0],[s+i,e],[o,e],[o,0]]}},t.prototype.getWaveHeight=function(){if(1<this.options.height)switch(this.options.position){case"bottom":return this.canvas.height-this.options.height;case"top":case"left":return this.options.height;case"right":return this.canvas.width-this.options.height}else switch(this.options.position){case"bottom":return this.canvas.height*(1-this.options.height);case"top":return this.canvas.height*this.options.height;case"left":return this.canvas.width*this.options.height;case"right":return this.canvas.width*(1-this.options.height)}},t}();window.Wave=s,e.default=s},{"./untils":1}]},{},[2]);
+var Wave = (function () {
+  'use strict';
+
+  function colorHex(color) {
+      var that = color;
+      //十六进制颜色值的正则表达式
+      var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+      // 如果是rgb颜色表示
+      if (/^(rgb|RGB)/.test(that)) {
+          var aColor = that.replace(/(?:\(|\)|rgb|RGB)*/g, "").split(",");
+          var strHex = "#";
+          for (var i = 0; i < aColor.length; i++) {
+              var hex = Number(aColor[i]).toString(16);
+              if (hex.length < 2) {
+                  hex = '0' + hex;
+              }
+              strHex += hex;
+          }
+          if (strHex.length !== 7) {
+              strHex = that;
+          }
+          return strHex;
+      }
+      else if (reg.test(that)) {
+          var aNum = that.replace(/#/, "").split("");
+          if (aNum.length === 6) {
+              return that;
+          }
+          else if (aNum.length === 3) {
+              var numHex = "#";
+              for (var i = 0; i < aNum.length; i += 1) {
+                  numHex += (aNum[i] + aNum[i]);
+              }
+              return numHex;
+          }
+      }
+      return that;
+  }
+  function colorRgb(color, opacity) {
+      var sColor = color.toLowerCase();
+      //十六进制颜色值的正则表达式
+      var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+      // 如果是16进制颜色
+      if (sColor && reg.test(sColor)) {
+          if (sColor.length === 4) {
+              var sColorNew = "#";
+              for (var i = 1; i < 4; i += 1) {
+                  sColorNew += sColor.slice(i, i + 1).concat(sColor.slice(i, i + 1));
+              }
+              sColor = sColorNew;
+          }
+          //处理六位的颜色值
+          var sColorChange = [];
+          for (var i = 1; i < 7; i += 2) {
+              sColorChange.push(parseInt("0x" + sColor.slice(i, i + 2)));
+          }
+          return "rgba(" + sColorChange.join(",") + "," + opacity + ")";
+      }
+      return sColor;
+  }
+
+  var Wave = /** @class */ (function () {
+      function Wave(container, options) {
+          var originOption = {
+              number: 3,
+              smooth: 50,
+              velocity: 1,
+              height: .3,
+              colors: ['#ff7657'],
+              border: {
+                  show: false,
+                  width: 2,
+                  color: ''
+              },
+              opacity: .5,
+              position: 'bottom',
+          };
+          this.container = document.querySelector(container);
+          this.options = Object.assign(originOption, options);
+          this.lines = [];
+          this.frame = null;
+          this.step = 0;
+          this.status = 'pause';
+          this.init();
+          this.draw();
+      }
+      Wave.prototype.init = function () {
+          if (this.container.querySelector('canvas') === null) {
+              var canvas = document.createElement('canvas');
+              this.container.appendChild(canvas);
+          }
+          this.canvas = this.container.querySelector('canvas');
+          this.canvas.width = this.container.offsetWidth;
+          this.canvas.height = this.container.offsetHeight;
+          this.ctx = this.canvas.getContext('2d');
+          this.setLines();
+      };
+      Wave.prototype.animate = function () {
+          this.status = 'animating';
+          this.draw();
+      };
+      Wave.prototype.pause = function () {
+          cancelAnimationFrame(this.frame);
+          this.frame = null;
+          this.status = 'pause';
+      };
+      Wave.prototype.setOptions = function (options) {
+          this.options = Object.assign(this.options, options);
+          this.setLines();
+          if (this.status === 'pause') {
+              this.draw();
+          }
+      };
+      Wave.prototype.reset = function () {
+          this.init();
+          this.reset();
+      };
+      Wave.prototype.draw = function () {
+          var _this = this;
+          var canvas = this.canvas;
+          var ctx = this.ctx;
+          var height = this.getWaveHeight();
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          this.step += this.options.velocity;
+          this.lines.forEach(function (line, index) {
+              var angle = (_this.step + index * 180 / _this.lines.length) * Math.PI / 180;
+              var leftHeight = Math.sin(angle) * _this.options.smooth;
+              var rightHeight = Math.cos(angle) * _this.options.smooth;
+              var vertexs = _this.getVertexs(leftHeight, rightHeight);
+              ctx.fillStyle = line.rgba;
+              ctx.beginPath();
+              ctx.moveTo(vertexs[0][0], vertexs[0][1]);
+              if (_this.options.border.show) {
+                  ctx.lineWidth = _this.options.border.width;
+                  ctx.strokeStyle = _this.options.border.color ? _this.options.border.color : line.hex;
+              }
+              if (_this.options.position === 'left' || _this.options.position === 'right') {
+                  ctx.bezierCurveTo(height + leftHeight - _this.options.smooth, canvas.height / 2, height + rightHeight - _this.options.smooth, canvas.width / 2, vertexs[1][0], vertexs[1][1]);
+              }
+              else {
+                  ctx.bezierCurveTo(canvas.width / 2, height + leftHeight - _this.options.smooth, canvas.width / 2, height + rightHeight - _this.options.smooth, vertexs[1][0], vertexs[1][1]);
+              }
+              if (_this.options.border.show) {
+                  ctx.stroke();
+              }
+              ctx.lineTo(vertexs[2][0], vertexs[2][1]);
+              ctx.lineTo(vertexs[3][0], vertexs[3][1]);
+              ctx.lineTo(vertexs[0][0], vertexs[0][1]);
+              ctx.closePath();
+              ctx.fill();
+          });
+          var that = this;
+          if (this.status === 'animating') {
+              this.frame = requestAnimationFrame(function () {
+                  that.draw();
+              });
+          }
+      };
+      Wave.prototype.setLines = function () {
+          this.lines = [];
+          for (var i = 0; i < this.options.number; i++) {
+              var color = this.options.colors[i % this.options.colors.length];
+              var line = {
+                  hex: colorHex(color),
+                  rgba: colorRgb(color, this.options.opacity)
+              };
+              this.lines.push(line);
+          }
+      };
+      Wave.prototype.getVertexs = function (leftHeight, rightHeight) {
+          var canvasHeight = this.canvas.height;
+          var canvasWidth = this.canvas.width;
+          var waveHeight = this.getWaveHeight();
+          switch (this.options.position) {
+              case 'bottom':
+                  return [
+                      [0, waveHeight + leftHeight],
+                      [canvasWidth, waveHeight + rightHeight],
+                      [canvasWidth, canvasHeight],
+                      [0, canvasHeight]
+                  ];
+              case 'top':
+                  return [
+                      [0, waveHeight + leftHeight],
+                      [canvasWidth, waveHeight + rightHeight],
+                      [canvasWidth, 0],
+                      [0, 0],
+                  ];
+              case 'left':
+                  return [
+                      [waveHeight + leftHeight, 0],
+                      [waveHeight + rightHeight, canvasHeight],
+                      [0, canvasHeight],
+                      [0, 0],
+                  ];
+              case 'right':
+                  return [
+                      [waveHeight + leftHeight, 0],
+                      [waveHeight + rightHeight, canvasHeight],
+                      [canvasWidth, canvasHeight],
+                      [canvasWidth, 0],
+                  ];
+          }
+      };
+      Wave.prototype.getWaveHeight = function () {
+          if (this.options.height > 1) {
+              switch (this.options.position) {
+                  case 'bottom':
+                      return this.canvas.height - this.options.height;
+                  case 'top':
+                      return this.options.height;
+                  case 'left':
+                      return this.options.height;
+                  case 'right':
+                      return this.canvas.width - this.options.height;
+              }
+          }
+          else {
+              switch (this.options.position) {
+                  case 'bottom':
+                      return this.canvas.height * (1 - this.options.height);
+                  case 'top':
+                      return this.canvas.height * this.options.height;
+                  case 'left':
+                      return this.canvas.width * this.options.height;
+                  case 'right':
+                      return this.canvas.width * (1 - this.options.height);
+              }
+          }
+      };
+      return Wave;
+  }());
+
+  return Wave;
+
+}());
 //# sourceMappingURL=wave.js.map
