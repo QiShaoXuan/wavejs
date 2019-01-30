@@ -22,7 +22,7 @@ export interface Options {
   border: {
     show: boolean,
     width: number,
-    color: string
+    color: string[]
   }
   position: 'top' | 'bottom' | 'left' | 'right'
 }

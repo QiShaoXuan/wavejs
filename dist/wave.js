@@ -70,7 +70,7 @@ var Wave = (function () {
               border: {
                   show: false,
                   width: 2,
-                  color: ''
+                  color: ['']
               },
               opacity: .5,
               position: 'bottom',
@@ -132,7 +132,7 @@ var Wave = (function () {
               ctx.moveTo(vertexs[0][0], vertexs[0][1]);
               if (_this.options.border.show) {
                   ctx.lineWidth = _this.options.border.width;
-                  ctx.strokeStyle = _this.options.border.color ? _this.options.border.color : line.hex;
+                  ctx.strokeStyle = _this.options.border.color[index] ? _this.options.border.color[index] : line.hex;
               }
               if (_this.options.position === 'left' || _this.options.position === 'right') {
                   ctx.bezierCurveTo(height + leftHeight - _this.options.smooth, canvas.height / 2, height + rightHeight - _this.options.smooth, canvas.width / 2, vertexs[1][0], vertexs[1][1]);

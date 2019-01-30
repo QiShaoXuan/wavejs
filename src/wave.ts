@@ -21,7 +21,7 @@ export default class Wave implements Core {
       border: {
         show: false,
         width: 2,
-        color: ''
+        color: ['']
       },
       opacity: .5,
       position: 'bottom',
@@ -100,7 +100,7 @@ export default class Wave implements Core {
 
       if (this.options.border.show) {
         ctx.lineWidth = this.options.border.width
-        ctx.strokeStyle = this.options.border.color ? this.options.border.color : line.hex
+        ctx.strokeStyle = this.options.border.color[index] ? this.options.border.color[index] : line.hex
       }
 
       if (this.options.position === 'left' || this.options.position === 'right') {
