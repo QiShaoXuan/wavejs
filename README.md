@@ -16,7 +16,7 @@
 
 第一个参数：动画容器的选择器
 
-第二个参数（可选）：[配置参数](#配置参数)
+第二个参数（可选）：[options](#options)
 
 #### 引入 `/dist/wave.es.js`
 ```js
@@ -41,6 +41,7 @@ const wave = new Wave('body')
 
 说明：动画容器的选择器
 
+### options
 ### options.number 
 类型： number
 
