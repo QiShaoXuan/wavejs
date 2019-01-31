@@ -68,6 +68,7 @@ export default class Wave implements Core {
   public setOptions(options: Object) {
     this.options = Object.assign(this.options, options)
     this.setLines()
+    this.reset()
     if (this.status === 'pause') {
       this.draw()
     }
@@ -75,7 +76,6 @@ export default class Wave implements Core {
 
   public reset(){
     this.init()
-    this.reset()
   }
 
   private draw() {
@@ -95,7 +95,6 @@ export default class Wave implements Core {
 
       ctx.fillStyle = line.rgba
       ctx.beginPath()
-
       ctx.moveTo(vertexs[0][0], vertexs[0][1])
 
       if (this.options.border.show) {

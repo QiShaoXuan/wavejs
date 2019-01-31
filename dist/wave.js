@@ -107,13 +107,13 @@ var Wave = (function () {
       Wave.prototype.setOptions = function (options) {
           this.options = Object.assign(this.options, options);
           this.setLines();
+          this.reset();
           if (this.status === 'pause') {
               this.draw();
           }
       };
       Wave.prototype.reset = function () {
           this.init();
-          this.reset();
       };
       Wave.prototype.draw = function () {
           var _this = this;
