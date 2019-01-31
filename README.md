@@ -18,13 +18,13 @@
 
 第二个参数（可选）：[options](#options)
 
-#### 引入 `/dist/wave.es.js`
+#### 引用 `/dist/wave.es.js`
 ```js
 import Wave from './dist/wave.es.js'
   
 const wave = new Wave('body')
 ```
-#### 引入 `/dist/wave.js`
+#### 引用 `/dist/wave.js`
 ```html
 <script src="./dist/wave.js"></script>
 <script >
