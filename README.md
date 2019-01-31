@@ -8,7 +8,7 @@
 
 <a href="https://qishaoxuan.github.io/wavejs/">简单的展示</a>
 
-<a href="https://qishaoxuan.github.io/css_tricks/notCSS/wave.html">附送代码的展示</a>
+<a href="https://qishaoxuan.github.io/css_tricks/notCSS/wave.html">附代码的展示</a>
 
 ## 使用
 

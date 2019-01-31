@@ -6,11 +6,11 @@
 
 a flexible ,configurable animation of wave
 
-<a href="https://qishaoxuan.github.io/wavejs/">简单的展示</a>
+<a href="https://qishaoxuan.github.io/wavejs/">simple demo</a>
 
-<a href="https://qishaoxuan.github.io/css_tricks/notCSS/wave.html">附送代码的展示</a>
+<a href="https://qishaoxuan.github.io/css_tricks/notCSS/wave.html">demo has code</a>
 
-## 使用
+## How to use
 
 Two parameters are received at instantiation time
 
@@ -104,7 +104,7 @@ Default:`"bottom"`
 
 Description: position of waves
 
-## 方法
+## methods
 
 ### `animate`
 start animation
