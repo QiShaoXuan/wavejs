@@ -1,4 +1,5 @@
 <a href="https://github.com/QiShaoXuan/wavejs/blob/master/README.md">中文</a>
+
 <a href="https://github.com/QiShaoXuan/wavejs/blob/master/README_en.md">English</a>
 
 # 波浪动画
@@ -6,6 +7,7 @@
 一个灵活的可配置的波浪动画
 
 <a href="https://qishaoxuan.github.io/wavejs/">简单的展示</a>
+
 <a href="https://qishaoxuan.github.io/css_tricks/notCSS/wave.html">附送代码的展示</a>
 
 ## 使用
@@ -16,13 +18,13 @@
 
 第二个参数（可选）：[配置参数](#配置参数)
 
-#### 引入 /dist/wave.es.js
+#### 引入 `/dist/wave.es.js`
 ```js
 import Wave from './dist/wave.es.js'
   
 const wave = new Wave('body')
 ```
-#### 引入 /dist/wave.js
+#### 引入 `/dist/wave.js`
 ```html
 <script src="./dist/wave.js"></script>
 <script >
@@ -104,15 +106,11 @@ const wave = new Wave('body')
 ## 方法
 
 ### `animate`
-说明：开始动画
+开始动画
 ### `pause`
-说明：暂停动画
+暂停动画
 ### `setOptions`
-说明：设置参数，接收值与上述 `options` 相同
+设置参数，接收值与上述 `options` 相同
 ### `reset`
-说明：重置动画，当容器大小变化时可用
-
-
-
-a flexible ,configurable animate of wave
+重置动画，当容器大小变化时可用
 
