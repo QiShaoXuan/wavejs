@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0
+  }
+
+  html,
+  body {
+    height: 100%;
+    overflow: hidden
+  }
+
+  canvas {
+  }
+
+</style>
+
+<body>
+<canvas id="canvas"></canvas>
+</body>
+<script>
+  var canvas = document.getElementById('canvas')
+  var ctx = canvas.getContext('2d')
+  canvas.width = canvas.parentNode.offsetWidth
+  canvas.height = canvas.parentNode.offsetHeight
+
+  let step = 0
+  const lines = 3
+
+  function loop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    step++
+    for (let i = 0; i < lines; i++) {
+      ctx.fillStyle = 'rgba(255,118,87,.3)'
+      var angle = (step + i * 180 / lines) * Math.PI / 180
+      var deltaHeight = Math.sin(angle) * 50
+      var deltaHeightRight = Math.cos(angle) * 50
+      ctx.beginPath()
+      ctx.moveTo(0, canvas.height / 2 + deltaHeight)
+      ctx.bezierCurveTo(canvas.width / 2, canvas.height / 2 + deltaHeight - 50, canvas.width / 2, canvas.height / 2 + deltaHeightRight - 50, canvas.width, canvas.height / 2 + deltaHeightRight)
+      ctx.lineTo(canvas.width, canvas.height)
+      ctx.lineTo(0, canvas.height)
+      ctx.lineTo(0, canvas.height / 2 + deltaHeight)
+      ctx.closePath()
+      ctx.fill()
+    }
+
+    requestAnimationFrame(loop)
+  }
+
+  loop()
+
+
+</script>
+
+</html>
