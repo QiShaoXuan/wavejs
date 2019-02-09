@@ -115,3 +115,6 @@ const wave = new Wave('body')
 ### `reset`
 重置动画，当容器大小变化时可用
 
+## TODO
+增加多个波浪（多个贝塞尔曲线连接）
+
