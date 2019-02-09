@@ -10,7 +10,7 @@
 
 春节放假前的第二天上午，看到设计稿上的图（如下），于是发生了下面的对话
 
-<img src="./img1.png" style="height:150px"/>
+<img src="./img1.png" height="150" style="height:150px"/>
 
 -我：把这个图传一下吧。
 
@@ -104,7 +104,7 @@ ctx.closePath()
 ctx.fill()
 ```
 
-<img src="./img2.png"  style="height:250px"/>
+<img src="./img2.png" height="250" style="height:250px"/>
 
 3. 让水动起来
 
@@ -178,7 +178,7 @@ ctx.fill()
 
 借助贝塞尔曲线将矩形的一边变为波浪。
 
-<img src="./img3.png"  style="height:250px"/>
+<img src="./img3.png" height="250" style="height:250px"/>
 
 在 canvas 绘制中，我们借助 `bezierCurveTo(cpX1, cpY1, cpX2, cpY2, x, y)` 方法绘制贝塞尔曲线，由上图可见（歪脖 45 度查看更直观），两个控制点的横坐标应当设为矩形宽的中点，纵坐标跟随峰值变化即可。
 
