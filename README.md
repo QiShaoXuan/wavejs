@@ -10,6 +10,8 @@
 
 <a href="https://qishaoxuan.github.io/css_tricks/notCSS/wave.html">附代码的展示</a>
 
+<a href="https://juejin.im/post/5c64ce6ef265da2d8c7db0df">教程</a>
+
 ## 使用
 
 在实例化时接收两个参数
