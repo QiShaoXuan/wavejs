@@ -59,7 +59,7 @@ gulp.task('buildTs', async function () {
     file: './dist/wave.js',
     format: 'iife',
     name: 'Wave',
-    sourcemap: true
+    sourcemap: false
   })
   await bundle.write({
     file: './dist/wave.es.js',
@@ -73,7 +73,7 @@ gulp.task("html", function () {
     .pipe(browserSync.reload({stream: true}))
 })
 
-gulp.task('default', ['buildTs'], function () {
+gulp.task('default', ['build'], function () {
   gulp.start('buildTs')
   browserSync.init({
     port: (new Date).getFullYear(),

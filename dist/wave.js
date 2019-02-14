@@ -234,4 +234,3 @@ var Wave = (function () {
   return Wave;
 
 }());
-//# sourceMappingURL=wave.js.map
